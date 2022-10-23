@@ -10,5 +10,6 @@ kmap,		&cmd_kmap
 cp,		&cmd_cp
 and,		&cmd_and
 or,		&cmd_or
+neg,		&cmd_neg
 fill,		&cmd_fill
 show,		&cmd_show

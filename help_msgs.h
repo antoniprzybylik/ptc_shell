@@ -79,6 +79,15 @@ static const char and_msg[] = ""
 "Oblicza koniunkcję funkcji i\n"
 "zapisuje wynik w funkcji 2.\n";
 
+static const char neg_msg[] = ""
+"\033[31;1mSchematy:\033[0m\n"
+"neg <funkcja>\n"
+"\n"
+"\033[31;1mOpis:\033[0m\n"
+"Neguje funkcję. Czyli nowa\n"
+"funkcja będzie miała zera tam\n"
+"gdzie ta ma jedynki.\n";
+
 static const char fill_msg[] = ""
 "\033[31;1mSchematy:\033[0m\n"
 "fill <funkcja>\n"

@@ -10,5 +10,6 @@ kmap,		kmap_msg
 cp,		cp_msg
 and,		and_msg
 or,		or_msg
+neg,		neg_msg
 fill,		fill_msg
 show,		show_msg

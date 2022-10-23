@@ -46,6 +46,7 @@ static const char help_default_msg[] = ""
 "cp\n"
 "or\n"
 "and\n"
+"neg\n"
 "fill\n"
 "show\n";
 
@@ -395,6 +396,64 @@ int cmd_and(int argc, char **argv)
 				    64 - __builtin_clzl(fun2->ones[i]));
 	}
 	
+	return(0);
+}
+
+int cmd_neg(int argc, char **argv)
+{
+	int i;
+	struct fun *fun = 0;
+	bool *is_one;
+
+	uint64_t *no;
+	int no_cnt = 0;
+
+	if (argc == 1) {
+		printf("Neg: Musisz podać nazwę funkcji.\n");
+		return -1;
+	}
+
+	if (argc > 2) {
+		printf("Neg: Za dużo argumentów.\n");
+		return -1;
+	}
+
+	for (i = 0; i < funs_cnt; i++) {
+		if (!strcmp(loaded_functions[i]->name, argv[1])) {
+			fun = loaded_functions[i];
+			break;
+		}
+	}
+
+	if (!fun) {
+		printf("Neg: Nie ma takiej funkcji: \"%s\"\n", argv[1]);
+		return -1;
+	}
+
+	if (fun->vars_cnt > 16) {
+		printf("Neg: Zbyt duża liczba zmiennych.\n");
+		return -1;
+	}
+
+	is_one = calloc(sizeof(is_one[0]), (1 << fun->vars_cnt));
+	no = malloc((1 << fun->vars_cnt) * sizeof(no[0]));
+
+	for (i = 0; i < fun->ones_cnt; i++)
+		is_one[fun->ones[i]] = 1;
+
+	for (i = 0; i < (1 << fun->vars_cnt); i++) {
+		if (!is_one[i])
+			no[no_cnt++] = i;
+	}
+
+	free(is_one);
+	free(fun->ones);
+
+	no = realloc(no, no_cnt * sizeof(no[0]));
+
+	fun->ones = no;
+	fun->ones_cnt = no_cnt;
+
 	return(0);
 }
 

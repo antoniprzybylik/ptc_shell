@@ -13,5 +13,6 @@ int cmd_kmap(int argc, char **argv);
 int cmd_cp(int argc, char **argv);
 int cmd_and(int argc, char **argv);
 int cmd_or(int argc, char **argv);
+int cmd_neg(int argc, char **argv);
 int cmd_fill(int argc, char **argv);
 int cmd_show(int argc, char **argv);
