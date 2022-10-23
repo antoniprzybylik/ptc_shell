@@ -389,12 +389,7 @@ int cmd_and(int argc, char **argv)
 	fun2->ones_cnt = no_cnt;
 	fun2->ones = no;
 
-	fun2->vars_cnt = 0;
-	for (i = 0; i < no_cnt; i++) {
-		if (!fun2->ones[i]) continue;
-		fun2->vars_cnt = MAX(fun2->vars_cnt,
-				    64 - __builtin_clzl(fun2->ones[i]));
-	}
+	fun2->vars_cnt = MAX(fun2->vars_cnt, fun1->vars_cnt);
 	
 	return(0);
 }
