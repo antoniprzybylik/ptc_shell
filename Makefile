@@ -36,7 +36,6 @@ debug:
 	gcc lib/fort.c -o lib/fort.o -r -g
 
 	gcc main.o shell.o commands.o eng.o apn/apn.o lib/fort.o -o ptc_shell -static
-	strip ptc_shell
 
 clean:
 	rm *.o */*.o ptc_shell
