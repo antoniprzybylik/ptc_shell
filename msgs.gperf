@@ -1,0 +1,14 @@
+struct msg { char *name; const char *text; };
+%%
+exit,		exit_msg
+help,		help_msg
+list,		list_msg
+new,		new_msg
+apn,		apn_msg
+mak,		mak_msg
+kmap,		kmap_msg
+cp,		cp_msg
+and,		and_msg
+or,		or_msg
+fill,		fill_msg
+show,		show_msg

@@ -1,0 +1,14 @@
+struct command { char *name; int (*method)(int, char**); };
+%%
+exit,		&cmd_exit
+help,		&cmd_help
+list,		&cmd_list
+new,		&cmd_new
+apn,		&cmd_apn
+mak,		&cmd_mak
+kmap,		&cmd_kmap
+cp,		&cmd_cp
+and,		&cmd_and
+or,		&cmd_or
+fill,		&cmd_fill
+show,		&cmd_show
