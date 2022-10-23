@@ -43,6 +43,9 @@ static bool cmp(uint64_t a, uint64_t b)
 	if (ma->dcs < mb->dcs)
 		return 1;
 
+	if (ma->dcs > mb->dcs)
+		return 0;
+
 	/* Jeżeli minitermy mają takie
 	 * same dc-y sortujemy po liczbie
 	 * jedynek */
@@ -203,6 +206,24 @@ static void print_result(void)
 	}
 }
 
+int pot(int a, int b)
+{
+	int w;
+
+	if (!b) return 1;
+
+	w = pot(a, b >> 1);
+	if (b & 1)
+		return w * w * a;
+	else
+		return w * w;
+}
+
+int upbnd(int fsize, int ones_cnt)
+{
+	return ones_cnt * pot(fsize, fsize / 2);
+}
+
 int mak(int vcnt, int ocnt, uint64_t *tab, bool verbose)
 {
 	int slcted;
@@ -216,12 +237,12 @@ int mak(int vcnt, int ocnt, uint64_t *tab, bool verbose)
 
 	mterms_cnt = ones_cnt;
 	ones = tab;
-
-	/* Liczba minitermów może się w
-	 * najgorszym wypadku podwoić. */
-	mterms = malloc(2 * mterms_cnt * sizeof(mterms[0]));
-	mterms2 = malloc(2 * mterms_cnt * sizeof(mterms2[0]));
-	merged = malloc(2 * mterms_cnt * sizeof(merged[0]));
+	
+	/* upbnd() to szacowanie liczby
+	 * minitermów w najgorszym przypadku. */
+	mterms = malloc(upbnd(fsize, ones_cnt) * sizeof(mterms[0]));
+	mterms2 = malloc(upbnd(fsize, ones_cnt) * sizeof(mterms2[0]));
+	merged = malloc(upbnd(fsize, ones_cnt) * sizeof(merged[0]));
 
 	for (i = 0; i < mterms_cnt; i++) {
 		mterms[i] = malloc(sizeof(struct mterm));
@@ -248,7 +269,7 @@ int mak(int vcnt, int ocnt, uint64_t *tab, bool verbose)
 	 * jako in_result. */
 	free(mterms2);
 	in_result = merged;
-	memset(in_result, 0, mterms_cnt);
+	memset(in_result, 0, mterms_cnt * sizeof(in_result[0]));
 
 	/* Wybieramy zasadnicze proste
 	 * implikanty. Robimy to na
