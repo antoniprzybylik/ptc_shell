@@ -15,4 +15,6 @@ int cmd_and(int argc, char **argv);
 int cmd_or(int argc, char **argv);
 int cmd_neg(int argc, char **argv);
 int cmd_fill(int argc, char **argv);
+int cmd_fill2(int argc, char **argv);
+int cmd_shrink(int argc, char **argv);
 int cmd_show(int argc, char **argv);

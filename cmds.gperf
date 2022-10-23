@@ -12,4 +12,6 @@ and,		&cmd_and
 or,		&cmd_or
 neg,		&cmd_neg
 fill,		&cmd_fill
+fill2,		&cmd_fill2
+shrink,		&cmd_shrink
 show,		&cmd_show

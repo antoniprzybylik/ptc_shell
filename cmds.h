@@ -32,9 +32,9 @@ error "gperf generated tables don't work with this execution character set. Plea
 #line 1 "cmds.gperf"
 struct command { char *name; int (*method)(int, char**); };
 
-#define TOTAL_KEYWORDS 13
+#define TOTAL_KEYWORDS 15
 #define MIN_WORD_LENGTH 2
-#define MAX_WORD_LENGTH 4
+#define MAX_WORD_LENGTH 6
 #define MIN_HASH_VALUE 2
 #define MAX_HASH_VALUE 29
 /* maximum key range = 28, duplicates = 0 */
@@ -63,8 +63,8 @@ hash (str, len)
       30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
       30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
       30, 30, 30, 30, 30, 30, 30,  5, 30,  5,
-      15, 15, 10, 15,  5, 10, 30,  0, 10, 10,
-       0,  0, 30, 30, 30,  0, 30, 30, 30,  0,
+      15, 15,  5, 15, 15, 10, 30, 10,  5,  0,
+       0,  0, 30, 30,  0,  0, 30, 30, 30,  0,
       30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
       30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
       30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
@@ -107,30 +107,34 @@ in_command_set (str, len)
       {"or",		&cmd_or},
 #line 6 "cmds.gperf"
       {"new",		&cmd_new},
-#line 15 "cmds.gperf"
+#line 17 "cmds.gperf"
       {"show",		&cmd_show},
-      {""}, {""},
+      {""},
+#line 16 "cmds.gperf"
+      {"shrink",		&cmd_shrink},
 #line 10 "cmds.gperf"
       {"cp",		&cmd_cp},
 #line 7 "cmds.gperf"
       {"apn",		&cmd_apn},
-#line 9 "cmds.gperf"
-      {"kmap",		&cmd_kmap},
-      {""}, {""}, {""},
-#line 8 "cmds.gperf"
-      {"mak",		&cmd_mak},
 #line 5 "cmds.gperf"
       {"list",		&cmd_list},
       {""}, {""}, {""},
+#line 8 "cmds.gperf"
+      {"mak",		&cmd_mak},
+#line 14 "cmds.gperf"
+      {"fill",		&cmd_fill},
+#line 15 "cmds.gperf"
+      {"fill2",		&cmd_fill2},
+      {""}, {""},
 #line 13 "cmds.gperf"
       {"neg",		&cmd_neg},
-#line 4 "cmds.gperf"
-      {"help",		&cmd_help},
+#line 9 "cmds.gperf"
+      {"kmap",		&cmd_kmap},
       {""}, {""}, {""},
 #line 11 "cmds.gperf"
       {"and",		&cmd_and},
-#line 14 "cmds.gperf"
-      {"fill",		&cmd_fill},
+#line 4 "cmds.gperf"
+      {"help",		&cmd_help},
       {""}, {""}, {""}, {""},
 #line 3 "cmds.gperf"
       {"exit",		&cmd_exit}

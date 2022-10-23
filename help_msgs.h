@@ -95,6 +95,25 @@ static const char fill_msg[] = ""
 "\033[31;1mOpis:\033[0m\n"
 "Wypełnia jedynki funkcji.\n";
 
+static const char fill2_msg[] = ""
+"\033[31;1mSchematy:\033[0m\n"
+"fill2 <funkcja>\n"
+"\n"
+"\033[31;1mOpis:\033[0m\n"
+"Wypełnia jedynki funkcji.\n"
+"Nie próbuje zgadnąć liczby\n"
+"zmiennych, pyta się o nią.\n";
+
+static const char shrink_msg[] = ""
+"\033[31;1mSchematy:\033[0m\n"
+"shrink <funkcja>\n"
+"\n"
+"\033[31;1mOpis:\033[0m\n"
+"Zmniejsza liczbę zmiennych w\n"
+"taki sposób, że najstarszy bit\n"
+"ma wartość 1 dla co najmniej\n"
+"jednej jedynki.\n";
+
 static const char show_msg[] = ""
 "\033[31;1mSchematy:\033[0m\n"
 "show <funkcja>\n"

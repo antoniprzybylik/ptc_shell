@@ -12,4 +12,6 @@ and,		and_msg
 or,		or_msg
 neg,		neg_msg
 fill,		fill_msg
+fill2,		fill2_msg
+shrink,		shrink_msg
 show,		show_msg

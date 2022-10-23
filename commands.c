@@ -48,6 +48,8 @@ static const char help_default_msg[] = ""
 "and\n"
 "neg\n"
 "fill\n"
+"fill2\n"
+"shrink\n"
 "show\n";
 
 int cmd_help(int argc, char **argv)
@@ -531,6 +533,136 @@ int cmd_fill(int argc, char **argv)
 	return(0);
 }
 
+int cmd_fill2(int argc, char **argv)
+{
+	int i;
+	char c;
+	int trm;
+	struct fun *fun = 0;
+	int ones_cnt;
+	int vars_cnt;
+
+	if (argc == 1) {
+		printf("Fill2: Musisz podać nazwę funkcji.\n");
+		return -1;
+	}
+
+	if (argc > 2) {
+		printf("Fill2: Za dużo argumentów.\n");
+		return -1;
+	}
+
+	for (i = 0; i < funs_cnt; i++) {
+		if (!strcmp(loaded_functions[i]->name, argv[1])) {
+			fun = loaded_functions[i];
+			break;
+		}
+	}
+
+	if (!fun) {
+		printf("Fill2: Nie ma takiej funkcji: \"%s\"\n", argv[1]);
+		return -1;
+	}
+
+	if (!fun->ones)
+		fun->ones = malloc(sizeof(fun->ones[0]));
+	trm = 1;
+
+	printf("Liczba zmiennych: ");
+	scanf("%d", &vars_cnt);
+
+	printf("Wprowadź jedynki: ");
+
+	/* Za każdym razem kiedy potrzebujemy
+	 * pamięci rezerwujemy dwa razy więcej
+	 * niż już zarezerwowaliśmy żeby nie
+	 * robić tego za dużo razy. */
+	ones_cnt = 0;
+	do {
+		if (ones_cnt == trm)
+			trm *= 2;
+			
+		if (trm > fun->ones_cnt) {
+			fun->ones = realloc(fun->ones, trm * sizeof(fun->ones[0]));
+			fun->ones_cnt = trm;
+		}
+
+		scanf("%lu%c", &fun->ones[ones_cnt], &c);
+		ones_cnt++;
+
+		if (fun->ones[ones_cnt] &&
+		    (64 - __builtin_clzl(fun->ones[ones_cnt])) > vars_cnt) {
+			printf("Fill2: Błąd: W jedynce %lu jest więcej zmiennych niż zadeklarowano!\n",
+			       fun->ones[ones_cnt]);
+			free(fun->ones);
+			fun->ones = 0;
+
+			return -1;
+		}
+	} while (c && c != '\n');
+
+	if (ones_cnt > 100000) {
+		printf("Fill2: Maksymalna liczba jedynek to 100000.\n");
+		free(fun->ones);
+		fun->ones_cnt = 0;
+		fun->vars_cnt = 0;
+		return -1;
+	}
+
+	/* Na koniec zwalniamy nadwyżkę. */
+	fun->ones = realloc(fun->ones, ones_cnt * sizeof(fun->ones[0]));
+	fun->ones_cnt = ones_cnt;
+
+	fun->vars_cnt = vars_cnt;
+
+	/* Normujemy funkcję. */
+	normalize_fun(fun);
+
+	return(0);
+}
+
+int cmd_shrink(int argc, char **argv)
+{
+	int i;
+	struct fun *fun = 0;
+
+	if (argc == 1) {
+		printf("Shrink: Musisz podać nazwę funkcji.\n");
+		return -1;
+	}
+
+	if (argc > 2) {
+		printf("Shrink: Za dużo argumentów.\n");
+		return -1;
+	}
+
+	for (i = 0; i < funs_cnt; i++) {
+		if (!strcmp(loaded_functions[i]->name, argv[1])) {
+			fun = loaded_functions[i];
+			break;
+		}
+	}
+
+	if (!fun) {
+		printf("Shrink: Nie ma takiej funkcji: \"%s\"\n", argv[1]);
+		return -1;
+	}
+	
+	if (!fun->ones) {
+		printf("Shrink: Funkcja nie jest wypełniona!\n");
+		return -1;
+	}
+
+	fun->vars_cnt = 0;
+	for (i = 0; i < fun->ones_cnt; i++) {
+		if (!fun->ones[i]) continue;
+		fun->vars_cnt = MAX(fun->vars_cnt,
+				    64 - __builtin_clzl(fun->ones[i]));
+	}
+
+	return(0);
+}
+
 int cmd_show(int argc, char **argv)
 {
 	int i;
@@ -555,6 +687,11 @@ int cmd_show(int argc, char **argv)
 
 	if (!fun) {
 		printf("Show: Nie ma takiej funkcji: \"%s\"\n", argv[1]);
+		return -1;
+	}
+
+	if (!fun->ones) {
+		printf("Show: Funkcja nie jest wypełniona!\n");
 		return -1;
 	}
 
