@@ -15,9 +15,7 @@ build:
 	gcc apn/sort.c -o apn/sort.o -c -O3 -std=gnu89
 	ld apn/mak.o apn/sort.o -o apn/apn.o -r
 
-	gcc lib/fort.c -o lib/fort.o -r
-
-	gcc main.o shell.o commands.o eng.o apn/apn.o lib/fort.o -o ptc_shell -static
+	gcc main.o shell.o commands.o eng.o apn/apn.o -o ptc_shell -static
 	strip ptc_shell
 
 debug:
@@ -33,9 +31,7 @@ debug:
 	gcc apn/sort.c -o apn/sort.o -c -O0 -std=gnu89 -g
 	ld apn/mak.o apn/sort.o -o apn/apn.o -r
 
-	gcc lib/fort.c -o lib/fort.o -r -g
-
-	gcc main.o shell.o commands.o eng.o apn/apn.o lib/fort.o -o ptc_shell -static
+	gcc main.o shell.o commands.o eng.o apn/apn.o -o ptc_shell -static
 
 clean:
 	rm *.o */*.o ptc_shell
