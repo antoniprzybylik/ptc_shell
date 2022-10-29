@@ -206,22 +206,22 @@ static void print_result(void)
 	}
 }
 
-int pot(int a, int b)
+static int ipow(int a, int b)
 {
 	int w;
 
 	if (!b) return 1;
 
-	w = pot(a, b >> 1);
+	w = ipow(a, b >> 1);
 	if (b & 1)
 		return w * w * a;
 	else
 		return w * w;
 }
 
-int upbnd(int fsize, int ones_cnt)
+static int upbnd(int fsize, int ones_cnt)
 {
-	return ones_cnt * pot(fsize, fsize / 2);
+	return ones_cnt * ipow(fsize, fsize / 2);
 }
 
 int mak(int vcnt, int ocnt, uint64_t *tab, bool verbose)
