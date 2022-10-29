@@ -7,7 +7,6 @@
 #include <string.h>
 
 #include "eng.h"
-#include "lib/fort.h"
 #include "apn/mak.h"
 #include "help_msgs.h"
 #include "msgs.h"
