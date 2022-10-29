@@ -7,6 +7,29 @@
 
 #include "sort.h"
 
+struct node {
+	uint64_t val;
+	struct node *next;
+};
+
+struct qnode {
+	struct node *e;
+	struct qnode *next;
+};
+
+struct queue {
+	struct qnode *first;
+	struct qnode *last;
+};
+
+static struct qnode *init_qlist(struct node *e);
+static void free_qlist(struct qnode *e);
+static struct qnode *insert_qlist(struct qnode *prev, struct node *e);
+static struct node *init_list(uint64_t val);
+static void free_list(struct node *e);
+static struct node *insert(struct node *prev, uint64_t val);
+
+static
 struct qnode *init_qlist(struct node *e)
 {
 	struct qnode *current;
@@ -18,6 +41,7 @@ struct qnode *init_qlist(struct node *e)
 	return current;
 }
 
+static
 void free_qlist(struct qnode *e)
 {
 	struct qnode *prev;
@@ -30,6 +54,7 @@ void free_qlist(struct qnode *e)
 	}
 }
 
+static
 struct qnode *insert_qlist(struct qnode *prev, struct node *e)
 {
 	struct qnode *current;
@@ -42,6 +67,7 @@ struct qnode *insert_qlist(struct qnode *prev, struct node *e)
 	return current;
 }
 
+static
 struct node *init_list(uint64_t val)
 {
 	struct node *current;
@@ -53,6 +79,7 @@ struct node *init_list(uint64_t val)
 	return current;
 }
 
+static
 void free_list(struct node *e)
 {
 	struct node *prev;
@@ -64,6 +91,7 @@ void free_list(struct node *e)
 	}
 }
 
+static
 struct node *insert(struct node *prev, uint64_t	val)
 {
 	struct node *current;
@@ -76,7 +104,8 @@ struct node *insert(struct node *prev, uint64_t	val)
 	return current;
 }
 
-inline bool eval1(struct node *a, struct node *b, bool (*cmp)(uint64_t, uint64_t))
+static inline
+bool eval1(struct node *a, struct node *b, bool (*cmp)(uint64_t, uint64_t))
 {
 	if (!a) return false;
 	if (!b) return true;
@@ -85,7 +114,8 @@ inline bool eval1(struct node *a, struct node *b, bool (*cmp)(uint64_t, uint64_t
 	return false;
 }
 
-inline bool eval2(struct node *a, struct node *b, bool (*cmp)(uint64_t, uint64_t))
+static inline
+bool eval2(struct node *a, struct node *b, bool (*cmp)(uint64_t, uint64_t))
 {
 	if (!b) return false;
 	if (!a) return true;
@@ -94,7 +124,10 @@ inline bool eval2(struct node *a, struct node *b, bool (*cmp)(uint64_t, uint64_t
 	return false;
 }
 
-struct node *sorted_merge(struct node *a, struct node *b, bool (*cmp)(uint64_t, uint64_t))
+static
+struct node *sorted_merge(struct node *a,
+			  struct node *b,
+			  bool (*cmp)(uint64_t, uint64_t))
 {
 	struct node *result, *fresult;
 
