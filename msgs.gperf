@@ -11,6 +11,8 @@ cp,		cp_msg
 and,		and_msg
 or,		or_msg
 neg,		neg_msg
+alg,		alg_msg
+alg_kpn,	alg_kpn_msg
 fill,		fill_msg
 fill2,		fill2_msg
 shrink,		shrink_msg

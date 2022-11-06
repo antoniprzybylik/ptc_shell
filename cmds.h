@@ -1,6 +1,6 @@
 /* C code produced by gperf version 3.1 */
 /* Command-line: gperf -t -L C -N in_command_set cmds.gperf  */
-/* Computed positions: -k'1,3' */
+/* Computed positions: -k'2-3' */
 
 #if !((' ' == 32) && ('!' == 33) && ('"' == 34) && ('#' == 35) \
       && ('%' == 37) && ('&' == 38) && ('\'' == 39) && ('(' == 40) \
@@ -32,9 +32,9 @@ error "gperf generated tables don't work with this execution character set. Plea
 #line 1 "cmds.gperf"
 struct command { char *name; int (*method)(int, char**); };
 
-#define TOTAL_KEYWORDS 15
+#define TOTAL_KEYWORDS 17
 #define MIN_WORD_LENGTH 2
-#define MAX_WORD_LENGTH 6
+#define MAX_WORD_LENGTH 7
 #define MIN_HASH_VALUE 2
 #define MAX_HASH_VALUE 29
 /* maximum key range = 28, duplicates = 0 */
@@ -62,10 +62,10 @@ hash (str, len)
       30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
       30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
       30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
-      30, 30, 30, 30, 30, 30, 30,  5, 30,  5,
-      15, 15,  5, 15, 15, 10, 30, 10,  5,  0,
-       0,  0, 30, 30,  0,  0, 30, 30, 30,  0,
-      30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
+      30, 30, 30, 30, 30, 30, 30, 15, 30, 30,
+      20,  5, 30,  0,  0,  0, 30,  5,  0, 10,
+       5, 20, 10, 30,  0, 15, 30, 30, 30,  5,
+      10, 30, 30, 30, 30, 30, 30, 30, 30, 30,
       30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
       30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
       30, 30, 30, 30, 30, 30, 30, 30, 30, 30,
@@ -88,8 +88,7 @@ hash (str, len)
         hval += asso_values[(unsigned char)str[2]];
       /*FALLTHROUGH*/
       case 2:
-      case 1:
-        hval += asso_values[(unsigned char)str[0]];
+        hval += asso_values[(unsigned char)str[1]];
         break;
     }
   return hval;
@@ -105,15 +104,28 @@ in_command_set (str, len)
       {""}, {""},
 #line 12 "cmds.gperf"
       {"or",		&cmd_or},
-#line 6 "cmds.gperf"
-      {"new",		&cmd_new},
-#line 17 "cmds.gperf"
-      {"show",		&cmd_show},
-      {""},
+#line 14 "cmds.gperf"
+      {"alg",		&cmd_alg},
 #line 16 "cmds.gperf"
+      {"fill",		&cmd_fill},
+#line 17 "cmds.gperf"
+      {"fill2",		&cmd_fill2},
+#line 18 "cmds.gperf"
       {"shrink",		&cmd_shrink},
+#line 15 "cmds.gperf"
+      {"alg_kpn",	&cmd_alg_kpn},
+#line 13 "cmds.gperf"
+      {"neg",		&cmd_neg},
+#line 4 "cmds.gperf"
+      {"help",		&cmd_help},
+      {""}, {""},
 #line 10 "cmds.gperf"
       {"cp",		&cmd_cp},
+#line 6 "cmds.gperf"
+      {"new",		&cmd_new},
+#line 3 "cmds.gperf"
+      {"exit",		&cmd_exit},
+      {""}, {""}, {""},
 #line 7 "cmds.gperf"
       {"apn",		&cmd_apn},
 #line 5 "cmds.gperf"
@@ -121,23 +133,13 @@ in_command_set (str, len)
       {""}, {""}, {""},
 #line 8 "cmds.gperf"
       {"mak",		&cmd_mak},
-#line 14 "cmds.gperf"
-      {"fill",		&cmd_fill},
-#line 15 "cmds.gperf"
-      {"fill2",		&cmd_fill2},
-      {""}, {""},
-#line 13 "cmds.gperf"
-      {"neg",		&cmd_neg},
-#line 9 "cmds.gperf"
-      {"kmap",		&cmd_kmap},
+#line 19 "cmds.gperf"
+      {"show",		&cmd_show},
       {""}, {""}, {""},
 #line 11 "cmds.gperf"
       {"and",		&cmd_and},
-#line 4 "cmds.gperf"
-      {"help",		&cmd_help},
-      {""}, {""}, {""}, {""},
-#line 3 "cmds.gperf"
-      {"exit",		&cmd_exit}
+#line 9 "cmds.gperf"
+      {"kmap",		&cmd_kmap}
     };
 
   if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)

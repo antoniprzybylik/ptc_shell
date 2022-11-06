@@ -46,6 +46,8 @@ static const char help_default_msg[] = ""
 "or\n"
 "and\n"
 "neg\n"
+"alg\n"
+"alg_kpn\n"
 "fill\n"
 "fill2\n"
 "shrink\n"
@@ -697,6 +699,112 @@ int cmd_show(int argc, char **argv)
 	for (i = 0; i < fun->ones_cnt; i++)
 		printf("%lu ", fun->ones[i]);
 	printf("\n");
+
+	return(0);
+}
+
+int cmd_alg_kpn(int argc, char **argv)
+{
+	int i, j;
+	struct fun *fun = 0;
+	uint64_t cone;
+
+	if (argc == 1) {
+		printf("Alg_kpn: Musisz podać nazwę funkcji.\n");
+		return -1;
+	}
+
+	if (argc > 2) {
+		printf("Alg_kpn: Za dużo argumentów.\n");
+		return -1;
+	}
+
+	for (i = 0; i < funs_cnt; i++) {
+		if (!strcmp(loaded_functions[i]->name, argv[1])) {
+			fun = loaded_functions[i];
+			break;
+		}
+	}
+
+	if (!fun) {
+		printf("Alg_kpn: Nie ma takiej funkcji: \"%s\"\n", argv[1]);
+		return -1;
+	}
+
+	if (!fun->ones) {
+		printf("Alg_kpn: Funkcja nie jest wypełniona!\n");
+		return -1;
+	}
+
+	for (i = 0; i < fun->ones_cnt; i++) {
+		cone = fun->ones[i];
+		printf("(");
+		for (j = fun->vars_cnt - 1; j >= 0; j--) {
+			if (cone & (1 << j))
+				printf("\033[31m[x%d]\033[0m", j);
+			else
+				printf("[x%d]", j);
+
+			if (j != 0)
+				printf(" + ");
+		}
+		
+		if (i != fun->ones_cnt - 1)
+			printf(") *\n");
+		else
+			printf(")\n");
+	}
+
+	return(0);
+}
+
+int cmd_alg(int argc, char **argv)
+{
+	int i, j;
+	struct fun *fun = 0;
+	uint64_t cone;
+
+	if (argc == 1) {
+		printf("Alg: Musisz podać nazwę funkcji.\n");
+		return -1;
+	}
+
+	if (argc > 2) {
+		printf("Alg: Za dużo argumentów.\n");
+		return -1;
+	}
+
+	for (i = 0; i < funs_cnt; i++) {
+		if (!strcmp(loaded_functions[i]->name, argv[1])) {
+			fun = loaded_functions[i];
+			break;
+		}
+	}
+
+	if (!fun) {
+		printf("Alg: Nie ma takiej funkcji: \"%s\"\n", argv[1]);
+		return -1;
+	}
+
+	if (!fun->ones) {
+		printf("Alg: Funkcja nie jest wypełniona!\n");
+		return -1;
+	}
+
+	for (i = 0; i < fun->ones_cnt; i++) {
+		cone = fun->ones[i];
+		for (j = fun->vars_cnt - 1; j >= 0; j--) {
+			if (cone & (1 << j))
+				printf("[x%d]", j);
+			else
+				printf("\033[31m[x%d]\033[0m", j);
+		}
+
+		if (i != fun->ones_cnt - 1)
+			printf(" +\n");
+		else
+			printf("\n");
+	}
 
 	return(0);
 }

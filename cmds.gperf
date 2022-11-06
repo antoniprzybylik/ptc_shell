@@ -11,6 +11,8 @@ cp,		&cmd_cp
 and,		&cmd_and
 or,		&cmd_or
 neg,		&cmd_neg
+alg,		&cmd_alg
+alg_kpn,	&cmd_alg_kpn
 fill,		&cmd_fill
 fill2,		&cmd_fill2
 shrink,		&cmd_shrink

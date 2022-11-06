@@ -88,6 +88,23 @@ static const char neg_msg[] = ""
 "funkcja będzie miała zera tam\n"
 "gdzie ta ma jedynki.\n";
 
+static const char alg_kpn_msg[] = ""
+"\033[31;1mSchematy:\033[0m\n"
+"alg_kpn <funkcja>\n"
+"\n"
+"\033[31;1mOpis:\033[0m\n"
+"Wypisuje funkcję w postaci\n"
+"wyrażenia algebraicznego w\n"
+"koniunkcyjnej postaci normalnej.\n";
+
+static const char alg_msg[] = ""
+"\033[31;1mSchematy:\033[0m\n"
+"alg <funkcja>\n"
+"\n"
+"\033[31;1mOpis:\033[0m\n"
+"Wypisuje funkcję w postaci\n"
+"wyrażenia algebraicznego.\n";
+
 static const char fill_msg[] = ""
 "\033[31;1mSchematy:\033[0m\n"
 "fill <funkcja>\n"
