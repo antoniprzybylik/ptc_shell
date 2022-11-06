@@ -57,8 +57,8 @@ static void interpret(char *buf)
 
 	command = in_command_set(cmd_name, j);
 	if (command == 0) {
-		printf("\033[32m[shell]\033[0m \033[31mError:\033[0m "
-		       "No such command: \"%s\".\n", cmd_name);
+		printf("\033[32m[shell]\033[0m \033[31mBłąd:\033[0m "
+		       "Nie ma takiej komendy: \"%s\".\n", cmd_name);
 		goto error;
 	}
 	cmd = command->method;
