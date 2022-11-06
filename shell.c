@@ -7,6 +7,7 @@
 #include <termios.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "shell.h"
 #include "cmds.h"
@@ -117,13 +118,49 @@ error:
 	/* ********** */
 }
 
+static inline bool eol_check(uint8_t *i_ref, uint8_t *line_size_ref, char *buf, char pc)
+{
+	uint8_t i = *i_ref;
+	uint8_t line_size = *line_size_ref;
+
+	if (buf[i] == '\n' || i == 63) {
+		if (buf[i] == '\n') {
+			buf[i] = pc;
+			buf[line_size] = '\0';
+		} else {
+			i++;
+			line_size = i > line_size ?
+				    i : line_size;
+			buf[line_size] = '\0';
+			write(0, "\n", 1);
+		}
+			
+		interpret(buf);
+		write(0, "\033[36m>>>\033[0m ", 13);
+		i = 0;
+		line_size = 0;
+	} else {
+		i++;
+		line_size = i > line_size ?
+			    i : line_size;
+	}
+
+	*i_ref = i;
+	*line_size_ref = line_size;
+	return (i != 0);
+}
+
 void shell_main(void)
 {
 	char buf[65];
 	uint8_t ccnt[65];
 	uint8_t i = 0;
+	uint8_t j = 0;
 
 	int bytes;
+	int in_esc_seq = 0;
+	uint8_t line_size = 0;
+	char pc;
 
 	struct termios termios;
 
@@ -138,8 +175,60 @@ void shell_main(void)
 	write(0, msg, sizeof(msg));
 
 	do {
+		pc = buf[i];
 		bytes = read(1, &buf[i], 1);
 		if (bytes != 1) break;
+
+		if (in_esc_seq == 1) {
+			if (buf[i] == '[') {
+				in_esc_seq++;
+				buf[i] = pc;
+				continue;
+			} else {
+				in_esc_seq = 0;
+
+				buf[i] == '?';
+				write(0, "\033[91m?\033[0m", 10);
+				if (!eol_check(&i, &line_size, buf, pc))
+					continue;
+			}
+		}
+
+		if (in_esc_seq == 2) {
+			in_esc_seq = 0;
+
+			switch (buf[i]) {
+				case 'A':
+					continue;
+				case 'B':
+					continue;
+				case 'C':
+					buf[i] = pc;
+					if (i >= line_size)
+						continue;
+
+					i++;
+					write(0, "\033[C", 3);
+					continue;
+				case 'D':
+					buf[i] = pc;
+					if (i <= 0)
+						continue;
+
+					i--;
+					write(0, "\033[D", 3);
+					continue;
+				default:
+					buf[i] == '?';
+					write(0, "\033[91m?\033[0m", 10);
+					if (!eol_check(&i, &line_size, buf, pc))
+						continue;
+					buf[i] == '?';
+					write(0, "\033[91m?\033[0m", 10);
+					if (!eol_check(&i, &line_size, buf, pc))
+						continue;
+			}
+		}
 
 		switch (buf[i]) {
 		case '\177':
@@ -148,9 +237,25 @@ void shell_main(void)
 				break;
 			}
 
-			write(0, "\b \b", 3);
-			i -= 2;
-			break;
+			buf[i] = pc;
+			memcpy(&buf[i-1], &buf[i], line_size - i);
+			i -= 1;
+			line_size -= 1;
+
+			write(0, "\b", 1);
+			write(0, &buf[i], line_size - i);
+			write(0, " \b", 2);
+
+			for (j = i; j < line_size; j++)
+				write(0, "\033[D", 3);
+
+			continue;
+
+		/* Klawisz escape. */
+		case '\033':
+			buf[i] = pc;
+			in_esc_seq = 1;
+			continue;
 
 		default:
 			if ((buf[i] >= 'a' && buf[i] <= 'z') ||
@@ -164,20 +269,7 @@ void shell_main(void)
 			}
 
 		}
-		
-		if (buf[i] == '\n' || i == 63) {
-			if (buf[i] == '\n') {
-				buf[i] = '\0';
-			} else {
-				buf[i + 1] = '\0';
-				write(0, "\n", 1);
-			}
-			
-			interpret(buf);
-			write(0, "\033[36m>>>\033[0m ", 13);
-			i = 0;
-		} else {
-			i++;
-		}
+
+		eol_check(&i, &line_size, buf, pc);
 	} while (bytes == 1);
 }
